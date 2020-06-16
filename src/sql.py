@@ -3,13 +3,13 @@ import os
 import sqlite3
 from tkinter import messagebox
 
-DBFile = 'cafeDB.db'
+from . import config
 
 
 # Establishes a connection with the database, and executes the
 # SQL statement, with the given parameters passed.
 def executeSQL(sqlStatement, parameters, fetchall):
-    connection = sqlite3.connect(DBFile)
+    connection = sqlite3.connect(config.DBFile)
     cursor = connection.cursor()
     cursor.execute(sqlStatement, parameters)
 
@@ -43,8 +43,8 @@ def loadDatabase(tree, table, refresh):
 # Creates the database tables, unless they already exist
 # And adds an admin user.
 def createDatabase():
-    if not os.path.isfile(DBFile):
-        connection = sqlite3.connect(DBFile)
+    if not os.path.isfile(config.DBFile):
+        connection = sqlite3.connect(config.DBFile)
         cursor = connection.cursor()
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS staffTbl(
@@ -170,7 +170,8 @@ def createDatabase():
         connection.close()
 
         # Checks whether there is an 'admin' user in the database
-        exists = executeSQL('SELECT staffID FROM staffTBL WHERE staffID = ?', ('admin',), False)
+        exists = executeSQL(
+            'SELECT staffID FROM staffTBL WHERE staffID = ?', ('admin',), False)
         if not exists:
             # Creates hashed/salted password
             salt = bcrypt.gensalt()

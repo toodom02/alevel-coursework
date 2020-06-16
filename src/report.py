@@ -4,8 +4,7 @@ from tkinter import messagebox
 from datetime import datetime
 import subprocess
 
-logo = 'logo.jpg'
-font = 'ALGER.TTF'
+from . import config
 
 
 # Using the records fetched from the previous report, which was output into a treeview,
@@ -59,7 +58,8 @@ class donationReport:
 
         list_word_per_row = []
         for row in rows:  # For each word in a row
-            row_resize = row.split('|')[1:-1]  # Remove first and last arguments
+            # Remove first and last arguments
+            row_resize = row.split('|')[1:-1]
             list_word_per_row.append(remove_space(row_resize))  # Remove spaces
 
         return header, list_word_per_row
@@ -80,9 +80,9 @@ class donationReport:
         spacing = 1.3  # Space in each cell
 
         pdf.add_page()  # add new page
-        pdf.image(logo, 20, 5, 12, 13)
-        pdf.image(logo, epw - 20, 5, 12, 13)
-        pdf.add_font('algerian', '', font, uni=True)
+        pdf.image(config.logo, 20, 5, 12, 13)
+        pdf.image(config.logo, epw - 20, 5, 12, 13)
+        pdf.add_font('algerian', '', config.font, uni=True)
         pdf.set_font('algerian', size=14)
         pdf.set_text_color(35, 128, 183)  # Trust logo colour
         pdf.cell(epw, 0, 'Kingfisher Trust', align='C')
@@ -94,8 +94,10 @@ class donationReport:
         pdf.cell(epw, 0, 'From ' + str(datetime.isoformat(self.startDate)[:10]) + ' to '
                  + str(datetime.isoformat(self.endDate)[:10]) + ':', align='L')
         pdf.ln(row_height * spacing)
-        pdf.cell(10, 0, 'Total Donated = £{:.2f}'.format(self.totalDonat), align='L')
-        pdf.cell(epw - 10, 0, 'Report Created: ' + str(datetime.isoformat(datetime.today())[:10]), align='R')
+        pdf.cell(10, 0, 'Total Donated = £{:.2f}'.format(
+            self.totalDonat), align='L')
+        pdf.cell(epw - 10, 0, 'Report Created: ' +
+                 str(datetime.isoformat(datetime.today())[:10]), align='R')
         pdf.ln(row_height * spacing)
 
         # Add header
@@ -119,7 +121,8 @@ class donationReport:
             openFile = messagebox.askyesno('Success',
                                            'PDF File Created\n' + title + '\n\nOpen File?')  # Outputs success dialogue
         except OSError:
-            openFile = messagebox.askyesno('Error', 'Unable to Overwrite Existing File\n\nOpen File?', icon='error')
+            openFile = messagebox.askyesno(
+                'Error', 'Unable to Overwrite Existing File\n\nOpen File?', icon='error')
 
         if openFile:
             subprocess.Popen([title], shell=True)  # Opens file
@@ -175,7 +178,8 @@ class orderReport:
 
         list_word_per_row = []
         for row in rows:  # For each word in a row
-            row_resize = row.split('|')[1:-1]  # Remove first and last arguments
+            # Remove first and last arguments
+            row_resize = row.split('|')[1:-1]
             list_word_per_row.append(remove_space(row_resize))  # Remove spaces
 
         return header, list_word_per_row
@@ -196,9 +200,10 @@ class orderReport:
         spacing = 1.3  # Space in each cell
 
         pdf.add_page()  # add new page
-        pdf.image(logo, 20, 5, 12, 13)
-        pdf.image(logo, epw - 20, 5, 12, 13)
-        pdf.add_font('algerian', '', font, uni=True)  # Adds algerian font
+        pdf.image(config.logo, 20, 5, 12, 13)
+        pdf.image(config.logo, epw - 20, 5, 12, 13)
+        pdf.add_font('algerian', '', config.font,
+                     uni=True)  # Adds algerian font
         pdf.set_font('algerian', size=14)
         pdf.set_text_color(35, 128, 183)  # Trust logo colour
         pdf.cell(epw, 0, 'Kingfisher Trust', align='C')
@@ -210,12 +215,16 @@ class orderReport:
         pdf.cell(epw, 0, 'From ' + str(datetime.isoformat(self.startDate)[:10]) + ' to '
                  + str(datetime.isoformat(self.endDate)[:10]) + ':', align='L')
         pdf.ln(row_height * spacing)
-        pdf.cell(10, 0, str('Total Cost = £{:.2f}'.format(self.totalCost)), align='L')
-        pdf.cell(epw - 10, 0, 'Report Created: ' + str(datetime.isoformat(datetime.today())[:10]), align='R')
+        pdf.cell(10, 0, str('Total Cost = £{:.2f}'.format(
+            self.totalCost)), align='L')
+        pdf.cell(epw - 10, 0, 'Report Created: ' +
+                 str(datetime.isoformat(datetime.today())[:10]), align='R')
         pdf.ln(row_height * spacing)
-        pdf.cell(10, 0, str('Total Revenue = £{:.2f}'.format(self.totalRevenue)), align='L')
+        pdf.cell(10, 0, str('Total Revenue = £{:.2f}'.format(
+            self.totalRevenue)), align='L')
         pdf.ln(row_height * spacing)
-        pdf.cell(10, 0, str('Total Profit = £{:.2f}'.format(self.totalProfit)), align='L')
+        pdf.cell(10, 0, str('Total Profit = £{:.2f}'.format(
+            self.totalProfit)), align='L')
         pdf.ln(row_height * spacing)
 
         # Add header
@@ -239,7 +248,8 @@ class orderReport:
             openFile = messagebox.askyesno('Success',
                                            'PDF File Created\n' + title + '\n\nOpen File?')  # Outputs success dialogue
         except OSError:
-            openFile = messagebox.askyesno('Error', 'Unable to Overwrite Existing File\n\nOpen File?', icon='error')
+            openFile = messagebox.askyesno(
+                'Error', 'Unable to Overwrite Existing File\n\nOpen File?', icon='error')
 
         if openFile:
             subprocess.Popen([title], shell=True)  # Opens file
@@ -257,7 +267,8 @@ class expenditureReport:
 
     def createPDF(self):
         self.table = PrettyTable()
-        self.table.field_names = ['ExpenditureID', 'Amount', 'Details', 'Date', 'StaffID']
+        self.table.field_names = ['ExpenditureID',
+                                  'Amount', 'Details', 'Date', 'StaffID']
 
         for record in self.records:
             self.table.add_row(record)
@@ -291,7 +302,8 @@ class expenditureReport:
 
         list_word_per_row = []
         for row in rows:  # For each word in a row
-            row_resize = row.split('|')[1:-1]  # Remove first and last arguments
+            # Remove first and last arguments
+            row_resize = row.split('|')[1:-1]
             list_word_per_row.append(remove_space(row_resize))  # Remove spaces
 
         return header, list_word_per_row
@@ -312,9 +324,9 @@ class expenditureReport:
         spacing = 1.3  # Space in each cell
 
         pdf.add_page()  # add new page
-        pdf.image(logo, 20, 5, 12, 13)
-        pdf.image(logo, epw - 20, 5, 12, 13)
-        pdf.add_font('algerian', '', font, uni=True)
+        pdf.image(config.logo, 20, 5, 12, 13)
+        pdf.image(config.logo, epw - 20, 5, 12, 13)
+        pdf.add_font('algerian', '', config.font, uni=True)
         pdf.set_font('algerian', size=14)
         pdf.set_text_color(35, 128, 183)  # Trust logo colour
         pdf.cell(epw, 0, 'Kingfisher Trust', align='C')
@@ -326,8 +338,10 @@ class expenditureReport:
         pdf.cell(epw, 0, 'From ' + str(datetime.isoformat(self.startDate)[:10]) + ' to '
                  + str(datetime.isoformat(self.endDate)[:10]) + ':', align='L')
         pdf.ln(row_height * spacing)
-        pdf.cell(10, 0, 'Total Spent = £{:.2f}'.format(self.totalSpent), align='L')
-        pdf.cell(epw - 10, 0, 'Report Created: ' + str(datetime.isoformat(datetime.today())[:10]), align='R')
+        pdf.cell(10, 0, 'Total Spent = £{:.2f}'.format(
+            self.totalSpent), align='L')
+        pdf.cell(epw - 10, 0, 'Report Created: ' +
+                 str(datetime.isoformat(datetime.today())[:10]), align='R')
         pdf.ln(row_height * spacing)
 
         # Add header
@@ -351,7 +365,8 @@ class expenditureReport:
             openFile = messagebox.askyesno('Success',
                                            'PDF File Created\n' + title + '\n\nOpen File?')  # Outputs success dialogue
         except OSError:
-            openFile = messagebox.askyesno('Error', 'Unable to Overwrite Existing File\n\nOpen File?', icon='error')
+            openFile = messagebox.askyesno(
+                'Error', 'Unable to Overwrite Existing File\n\nOpen File?', icon='error')
 
         if openFile:
             subprocess.Popen([title], shell=True)  # Opens file
